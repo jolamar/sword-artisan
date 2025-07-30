@@ -16,6 +16,10 @@ Route::get('/leaderboard', [LeaderboardController::class, 'index'])->middleware(
 
 Route::post('/score', 'App\Http\Controllers\ScoreController@store')->middleware('auth');
 
+Route::get('/clear-leaderboard', function () {
+    \App\Models\Score::truncate();
+    return 'ok';
+})->middleware('auth')->name('clear-leaderboard');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
