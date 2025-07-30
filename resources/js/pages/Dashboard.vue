@@ -73,6 +73,18 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/dashboard',
     },
 ];
+
+function drinkBrew() {
+    if (isDrinking.value) return;
+
+    isDrinking.value = true;
+
+    // Simulate brew drinking time (e.g. 3 seconds)
+    setTimeout(() => {
+        energy.value = Math.min(energy.value + 30, 100); // add 30 energy, max 100
+        isDrinking.value = false;
+    }, 3000); // 3 seconds
+}
 </script>
 
 <template>
@@ -106,7 +118,10 @@ const breadcrumbs: BreadcrumbItem[] = [
                 </div>
 
                 <!-- Controls -->
-                <div class="flex justify-center gap-4 mt-6">
+                <div v-if="isDrinking" class="flex justify-center gap-4 mt-6">
+                    <p class="text-yellow-400 text-sm">🍺 Drinking brew...</p>
+                </div>
+                <div v-else class="flex justify-center gap-4 mt-6">
                     <button @click="addWood" :disabled="energy < 10 || isDrinking"
                             class="px-4 py-2 bg-amber-600 hover:bg-amber-700 rounded-lg disabled:opacity-50">
                         Add Wood
