@@ -31,7 +31,7 @@ function addWood() {
 
     energy.value -= 10; // reduce energy
     forgeTemp.value = Math.min(forgeTemp.value + 10, 100); // increase forge temp, max 100
-    swordProgress.value = Math.min(swordProgress.value + 5, 100); // advance sword progress
+    vaporHealth.value = Math.min(vaporHealth.value + 5, 100); // heal vapor slightly
 }
 
 const gameTick = () => {
@@ -51,7 +51,7 @@ const gameTick = () => {
     // Every 10 seconds, reduce vapor health IF forge is too cold
     healthTimer += 1;
     if (healthTimer >= 10) {
-        if (forgeTemp.value < 30) {
+        if (forgeTemp.value < 70) {
             vaporHealth.value = Math.max(0, vaporHealth.value - 10);
         }
         healthTimer = 0;
@@ -133,8 +133,10 @@ function drinkBrew() {
                 <!-- Game Canvas -->
                 <div class="flex-1 flex flex-col items-center justify-center gap-4">
                     <p class="text-center text-white text-lg font-medium max-w-xl">
-                        🔥 Keep the <span class="text-purple-300 font-bold">Vapor</span> alive by feeding the forge! If Vapor fades... the game ends.
+                        🔥 Keep the <span class="text-purple-300 font-bold">Vapor</span> alive by feeding the forge! If Vapor fades... the game ends. Vapor temp must be above 50° to forge the sword. Add wood to the forge to increase its temperature and heal Vapor. Drink brews to restore energy.
                     </p>
+                    <p class="text-center text-xs text-purple-200 mb-1">Vapor Health</p>
+                    <progress :value="vaporHealth" max="100" class="w-32 h-2 mb-2"></progress>
                     <img src="/images/vapor.jpg" alt="Vapor" class="h-32 w-32 transition-opacity duration-300" :style="{ opacity: vaporHealth / 100 }" />
                     <img src="/images/forge.jpg" alt="Vapor" class="h-32 w-32 transition-opacity duration-300" />
                     <progress :value="swordProgress" max="100" class="w-3/4 h-4"></progress>
