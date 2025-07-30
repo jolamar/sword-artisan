@@ -19,6 +19,14 @@ const gameOver = ref(false);
 let mainInterval: ReturnType<typeof setInterval> | null = null;
 let healthTimer = 0;
 
+function addWood() {
+    if (energy.value < 10 || isDrinking.value) return;
+
+    energy.value -= 10; // reduce energy
+    forgeTemp.value = Math.min(forgeTemp.value + 10, 100); // increase forge temp, max 100
+    swordProgress.value = Math.min(swordProgress.value + 5, 100); // advance sword progress
+}
+
 const gameTick = () => {
     if (gameOver.value || swordProgress.value >= 100) return;
 
