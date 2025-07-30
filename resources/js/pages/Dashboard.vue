@@ -1,8 +1,67 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
+
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const vaporHealth = ref(100);
+const forgeTemp = ref(60);
+const energy = ref(100);
+const score = ref(0);
+const swordProgress = ref(0);
+const isDrinking = ref(false);
+const gameOver = ref(false);
+
+let mainInterval: ReturnType<typeof setInterval> | null = null;
+let healthTimer = 0;
+
+const gameTick = () => {
+    if (gameOver.value || swordProgress.value >= 100) return;
+
+    // Score points every second while vapor is alive
+    if (vaporHealth.value > 0) {
+        score.value += 100;
+    }
+
+    // Forge cools down gradually
+    forgeTemp.value = Math.max(0, forgeTemp.value - 1);
+
+    // Drain energy slowly
+    energy.value = Math.max(0, energy.value - 1);
+
+    // Every 10 seconds, reduce vapor health IF forge is too cold
+    healthTimer += 1;
+    if (healthTimer >= 10) {
+        if (forgeTemp.value < 30) {
+            vaporHealth.value = Math.max(0, vaporHealth.value - 10);
+        }
+        healthTimer = 0;
+    }
+
+    // Progress sword forging if forge is hot and vapor is alive
+    if (forgeTemp.value >= 50 && vaporHealth.value > 0) {
+        swordProgress.value = Math.min(100, swordProgress.value + 1);
+    }
+
+    // Game over if vapor dies
+    if (vaporHealth.value <= 0) {
+        gameOver.value = true;
+        clearInterval(mainInterval!);
+    }
+
+    // Win condition
+    if (swordProgress.value >= 100) {
+        clearInterval(mainInterval!);
+    }
+};
+
+onMounted(() => {
+    mainInterval = setInterval(gameTick, 1000); // Tick every second
+});
+
+onUnmounted(() => {
+    if (mainInterval) clearInterval(mainInterval);
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
