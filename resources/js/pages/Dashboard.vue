@@ -114,6 +114,11 @@ function drinkBrew() {
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
+            <div class="mb-2">
+                <a href="/leaderboard" class="text-blue-400 hover:underline font-semibold">
+                    🏆 View Leaderboard
+                </a>
+            </div>
             <!-- Game Wrapper -->
             <div class="relative min-h-[100vh] flex flex-col rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border bg-stone-800 text-white">
 
