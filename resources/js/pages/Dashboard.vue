@@ -6,7 +6,14 @@ import { usePage } from '@inertiajs/vue3'
 const page = usePage()
 const user = page.props.auth.user
 
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import axios from 'axios';
+
+function saveScore() {
+    axios.post('/score', { score: score.value })
+        .then(() => console.log('Score saved'))
+        .catch(err => console.error('Error saving score:', err));
+}
 
 const vaporHealth = ref(100);
 const forgeTemp = ref(60);
@@ -69,6 +76,15 @@ const gameTick = () => {
 
 onMounted(() => {
     mainInterval = setInterval(gameTick, 1000); // Tick every second
+});
+
+// Watch for game over or sword completion and save score
+watch(gameOver, (value) => {
+    if (value) saveScore();
+});
+
+watch(swordProgress, (value) => {
+    if (value >= 100) saveScore();
 });
 
 onUnmounted(() => {
