@@ -167,8 +167,9 @@ function drinkBrew() {
                     Game Over - Score: {{ score }}
                 </div>
 
-                <div v-if="swordProgress >= 100" class="absolute inset-0 bg-black/80 flex items-center justify-center text-3xl font-bold text-green-400">
+                <div v-if="swordProgress >= 100" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-3xl font-bold text-green-400">
                     Sword Forged! Final Score: {{ score }}
+                    <a href="/leaderboard" class="mt-4 text-blue-400 underline text-lg font-semibold">🏆 View Leaderboard</a>
                 </div>
 
             </div>
