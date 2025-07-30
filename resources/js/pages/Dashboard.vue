@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { usePage } from '@inertiajs/vue3'
+
+const page = usePage()
+const user = page.props.auth.user
 
 import { ref, onMounted, onUnmounted } from 'vue';
 
@@ -80,6 +84,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                 <!-- Top HUD -->
                 <div class="flex justify-between items-center mb-4">
                     <div>
+                        <p class="text-sm text-gray-400">Logged in as: <span class="font-bold">{{ user.name }}</span></p>
                         <p class="font-semibold">Vapor Health: {{ vaporHealth }}</p>
                         <p class="font-semibold">Forge Temp: {{ forgeTemp }}°</p>
                     </div>
@@ -91,6 +96,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
                 <!-- Game Canvas -->
                 <div class="flex-1 flex flex-col items-center justify-center gap-4">
+                    <p class="text-center text-white text-lg font-medium max-w-xl">
+                        🔥 Keep the <span class="text-purple-300 font-bold">Vapor</span> alive by feeding the forge! If Vapor fades... the game ends.
+                    </p>
                     <img src="/images/vapor.jpg" alt="Vapor" class="h-32 w-32 transition-opacity duration-300" :style="{ opacity: vaporHealth / 100 }" />
                     <img src="/images/forge.jpg" alt="Vapor" class="h-32 w-32 transition-opacity duration-300" />
                     <progress :value="swordProgress" max="100" class="w-3/4 h-4"></progress>
